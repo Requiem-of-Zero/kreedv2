@@ -2,12 +2,12 @@ import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-// import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import logo from "../../../public/static/images/kreed_logo.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {

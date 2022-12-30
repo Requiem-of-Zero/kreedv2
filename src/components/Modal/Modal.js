@@ -13,7 +13,7 @@ import ReactPlayer from "react-player/lazy";
 import { useRecoilState } from "recoil";
 import { modalState, movieState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL } from "../../../constants/media";
-// import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 // import MovieComments from "./MovieComments";
 
 const Modal = () => {

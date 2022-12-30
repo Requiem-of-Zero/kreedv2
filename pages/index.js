@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "../atoms/modalAtom";
-// import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import Banner from "../src/components/Banner/Banner";
 import Header from "../src/components/Header/Header";
 import MediaRows from "../src/components/MediaRow/MediaRows";
@@ -53,10 +53,10 @@ const Home = ({
   romanceMovies,
   documentaries,
 }) => {
-  // const { logout, loading } = useAuth();
+  const { logout, loading } = useAuth();
   const [showModal, setShowModal] = useRecoilState(modalState);
 
-  // if (loading) return null;
+  if (loading) return null;
 
   return (
     <div
