@@ -2,11 +2,10 @@ import Head from "next/head";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import useAuth from "../hooks/useAuth";
-import Banner from "../src/components/Banner";
-import Header from "../src/components/Header";
-import MediaRows from "../src/components/MediaRow";
-import Modal from "../src/components/Modal";
-import { Movie } from "../typings";
+import Banner from "../src/components/Banner/Banner";
+import Header from "../src/components/Header/Header";
+import MediaRows from "../src/components/MediaRow/MediaRows";
+import Modal from "../src/components/Modal/Modal";
 import requests from "../utils/requests";
 
 export const getServerSideProps = async () => {
@@ -44,16 +43,6 @@ export const getServerSideProps = async () => {
   };
 };
 
-interface Props {
-  actionShows: Movie[];
-  animationShows: Movie[];
-  comedyShows: Movie[];
-  realityShows: Movie[];
-  dramaShows: Movie[];
-  documentaryShows: Movie[];
-  kidsShows: Movie[];
-  fantansyShows: Movie[];
-}
 
 const TVShows = ({
   actionShows,
@@ -64,9 +53,10 @@ const TVShows = ({
   documentaryShows,
   kidsShows,
   fantansyShows,
-}: Props) => {
+}) => {
   const { logout, loading } = useAuth();
   const [showModal, setShowModal] = useRecoilState(modalState);
+
   if (loading) return null;
 
   return (

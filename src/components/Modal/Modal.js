@@ -72,6 +72,7 @@ const Modal = () => {
             authorId: user?.uid,
             movieId: featuredMovie?.id,
             content: "",
+            createdAt: new Date(),
             id: 0,
           });
           refreshData();
@@ -81,6 +82,7 @@ const Modal = () => {
             authorId: user?.uid,
             movieId: featuredMovie?.id,
             content: "",
+            createdAt: new Date(),
             id: 0,
           });
           refreshData();
