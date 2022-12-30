@@ -78,16 +78,16 @@ const Login = () => {
           </label>
         </div>
         <button
-          type='submit'
-          className="w-full rounded bg-[#e50914] py-3 font-semibold"
+          type="submit"
+          className="w-full rounded bg-[#e50914] py-3 font-semibold transition duration-300 hover:bg-blue-700 hover:text-black"
           onClick={() => {
-            setLogin(true)
+            setLogin(true);
           }}
         >
           Sign In
         </button>
         <button
-          className="w-full rounded bg-[#e50914] py-3 font-semibold"
+          className="w-full rounded bg-blue-700 py-3 font-semibold transition duration-300 hover:bg-[#e50914] hover:text-black"
           onClick={() => {
             signIn("hello2@hello.com", "abc123");
           }}
