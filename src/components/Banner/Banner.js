@@ -3,11 +3,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "../../atoms/modalAtom";
-import { IMAGE_BASE_URL } from "../../constants/media";
+import { modalState, movieState } from "../../../atoms/modalAtom";
+import { IMAGE_BASE_URL } from "../../../constants/media";
 
 const Banner = ({ netflixOriginals }) => {
-  const [featuredMovie, setFeaturedMovie] = (useState < Movie) | (null > null);
+  const [featuredMovie, setFeaturedMovie] = useState(null);
   const [showModal, setShowModal] = useRecoilState(modalState);
   const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
 
@@ -22,7 +22,7 @@ const Banner = ({ netflixOriginals }) => {
       <div className="z-0 absolute top-0 left-0 h-[50vh] lg:h-[95vh] w-screen select-none">
         <Image
           src={`${IMAGE_BASE_URL}/${
-            featuredMovie.backdrop_path || featuredMovie?.poster_path
+            featuredMovie && featuredMovie.backdrop_path || featuredMovie?.poster_path
           }`}
           object-fit="contain"
           fill
@@ -34,12 +34,12 @@ const Banner = ({ netflixOriginals }) => {
       </div>
       <div className="bannerCTA z-10 pl-10 lg:w-200">
         <h1 className="font-bold max-w-s text-2xl pb-4 text-shadow-md md:text-4xl lg:text-7xl">
-          {featuredMovie.title ||
-            featuredMovie.name ||
-            featuredMovie.original_title}
+          {(featuredMovie && featuredMovie.title )|| (featuredMovie &&
+            featuredMovie.name )|| (featuredMovie &&
+            featuredMovie.original_title)}
         </h1>
         <p className="max-w-s pb-5 text-shadow-md text-xs md:max-w-lg md:text-lg lg:max-w-2xl lg:text-2xl">
-          {featuredMovie.overview}
+          {featuredMovie && featuredMovie.overview}
         </p>
         <div className="flex space-x-3">
           <button className="bannerBtn bg-white text-black">

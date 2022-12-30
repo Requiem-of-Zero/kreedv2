@@ -1,8 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
 import { useRef, useState } from "react";
-import { Movie } from "../../typings";
-import MediaItem from "./MediaItem";
+import MediaItem from "../../components/MediaItem/MediaItem";
 
 const MediaRows = ({ title, movies }) => {
   const rowRef = useRef(null);

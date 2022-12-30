@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "../../atoms/modalAtom";
+import { modalState, movieState } from "../../../atoms/modalAtom";
 
 const MediaItem = ({ movie }) => {
   const [showModal, setShowModal] = useRecoilState(modalState);
