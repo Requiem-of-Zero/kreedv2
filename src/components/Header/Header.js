@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import logo from "../../../public/static/images/kreed_logo.png";
+import BasicMenu from "../BasicMenu/BasicMenu";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,6 +36,7 @@ const Header = () => {
             alt="kreed homepage logo"
           />
         </Link>
+        <BasicMenu />
         <ul className="hidden space-x-4 md:flex">
           <li className="header__link">
             <Link href="/">Home</Link>
