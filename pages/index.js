@@ -71,7 +71,7 @@ const Home = ({
       <Header />
       <main className="pb-2">
         <Banner netflixOriginals={netflixOriginals} />
-        <section className="absolute md:space-y-24 md:pt-40">
+        <section className="absolute pb-20 md:space-y-24 md:pt-40">
           <MediaRows title="Trending Now" movies={trendingNow} />
           <MediaRows title="Top Rated" movies={topRated} />
           <MediaRows title="Action Thrillers" movies={actionMovies} />

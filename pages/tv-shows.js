@@ -72,7 +72,7 @@ const TVShows = ({
       <Header />
       <main>
         <Banner netflixOriginals={actionShows} />
-        <section className="absolute md:space-y-24 md:pt-40">
+        <section className="absolute pb-20 md:space-y-24 md:pt-40">
           <MediaRows title="Animation" movies={animationShows} />
           <MediaRows title="Comedy" movies={comedyShows} />
           <MediaRows title="Action & Adventure" movies={actionShows} />

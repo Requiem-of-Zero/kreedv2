@@ -71,7 +71,7 @@ const TVShows = ({
       <Header />
       <main>
         <Banner netflixOriginals={historyMovies} />
-        <section className="absolute md:space-y-24 md:pt-40">
+        <section className="absolute pb-20 md:space-y-24 md:pt-40">
           <MediaRows title="Musical" movies={musicalMovies} />
           <MediaRows title="Fantasy" movies={fantasyMovies} />
           <MediaRows title="Mystery" movies={mysteryMovies} />
