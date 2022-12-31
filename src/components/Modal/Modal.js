@@ -14,7 +14,7 @@ import { useRecoilState } from "recoil";
 import { modalState, movieState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL } from "../../../constants/media";
 import useAuth from "../../../hooks/useAuth";
-// import MovieComments from "./MovieComments";
+import MovieComments from '../MovieComments/MovieComments';
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalState);
@@ -23,39 +23,49 @@ const Modal = () => {
   const [genres, setGenres] = useState([]);
   const [muted, setMuted] = useState(false);
   const { user } = useAuth();
-  const [comment, setComment] = useState({
-    id: 0,
-    authorName: user?.email,
-    authorId: user?.uid,
-    movieId: featuredMovie?.id,
-    content: "",
-  });
-
+    const [comment, setComment] = useState({
+      id: 0,
+      authorName: user.email,
+      authorId: user.uid,
+      movieId: featuredMovie.id,
+      content: "",
+    });
+  const [comments, setComments] = useState([]);
   const router = useRouter();
+
   useEffect(() => {
     if (!featuredMovie) return;
 
     async function fetchMovie() {
       const data = await fetch(
         `https://api.themoviedb.org/3/${
-          featuredMovie?.media_type === "tv" ? "tv" : "movie"
+          featuredMovie.media_type === "tv" ? "tv" : "movie"
         }/${featuredMovie?.id}?api_key=${
           process.env.NEXT_PUBLIC_API_KEY
         }&language=en-US&append_to_response=videos`
       ).then((res) => res.json());
 
-      if (data?.videos) {
+      if (data.videos) {
         const vidIdx = data.videos.results.findIndex(
           (element) => element.type === "Trailer"
         );
-        setTrailer(data.videos?.results[vidIdx]?.key);
+        setTrailer(data.videos.results[vidIdx].key);
       }
-      if (data?.genres) {
+      if (data.genres) {
         setGenres(data.genres);
       }
     }
-    fetchMovie();
+
+    fetchMovie()
+    return() => {
+      
+    }
   }, [featuredMovie]);
+  
+  async function fetchComments() {
+    const data = await fetch(`http://localhost:3000/api/movie/${featuredMovie.id}`).then((res) => res.json());
+    setComments(data)
+  }
 
   async function createComment(data) {
     try {
@@ -76,6 +86,7 @@ const Modal = () => {
             id: 0,
           });
           refreshData();
+          fetchComments();
         } else {
           setComment({
             authorName: user?.email,
@@ -86,6 +97,7 @@ const Modal = () => {
             id: 0,
           });
           refreshData();
+          fetchComments();
         }
       });
     } catch (error) {
@@ -192,16 +204,16 @@ const Modal = () => {
                 </div>
                 <div>
                   <span className="text-[gray]">Original Language: </span>
-                  {featuredMovie?.original_language.toUpperCase()}
+                  {featuredMovie.original_language.toUpperCase()}
                 </div>
                 <div>
                   <span className="text-[gray]">Total votes: </span>
-                  {featuredMovie?.vote_count}
+                  {featuredMovie.vote_count}
                 </div>
               </div>
             </div>
             <div className="comments_section">
-              {/* <MovieComments comments={comments}/> */}
+              <MovieComments comments={comments}/>
               {/* Comment Form for Media */}
               <form className="comments_form flex justify-center">
                 <textarea
