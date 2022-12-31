@@ -63,13 +63,13 @@ const Modal = () => {
   }, [featuredMovie]);
   
   async function fetchComments() {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/movie/${featuredMovie.id}`).then((res) => res.json());
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movie/${featuredMovie.id}`).then((res) => res.json());
     setComments(data)
   }
 
   async function createComment(data) {
     try {
-      fetch(`${process.env.NEXT_PUBLIC_URL}/api/createComment`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createComment`, {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
