@@ -12,7 +12,7 @@ import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy";
 import { useRecoilState } from "recoil";
 import { modalAtomState, movieAtomState } from "../../../atoms/modalAtom";
-import { IMAGE_BASE_URL, BASE_URL } from "../../../constants/media";
+import { IMAGE_BASE_URL } from "../../../constants/media";
 import useAuth from "../../../hooks/useAuth";
 import MovieComments from '../MovieComments/MovieComments';
 
@@ -63,13 +63,13 @@ const Modal = () => {
   }, [featuredMovie]);
   
   async function fetchComments() {
-    const data = await fetch(`${BASE_URL}/api/movie/${featuredMovie.id}`).then((res) => res.json());
+    const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/movie/${featuredMovie.id}`).then((res) => res.json());
     setComments(data)
   }
 
   async function createComment(data) {
     try {
-      fetch(`${BASE_URL}/api/createComment`, {
+      fetch(`${process.env.NEXT_PUBLIC_URL}/api/createComment`, {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
