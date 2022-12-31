@@ -49,7 +49,7 @@ const Modal = () => {
         const vidIdx = data.videos.results.findIndex(
           (element) => element.type === "Trailer"
         );
-        setTrailer(data.videos.results[vidIdx].key);
+        setTrailer(data.videos.results[vidIdx] && data.videos.results[vidIdx].key);
       }
       if (data.genres) {
         setGenres(data.genres);
@@ -78,9 +78,9 @@ const Modal = () => {
       }).then(() => {
         if (data.id) {
           setComment({
-            authorName: user?.email,
-            authorId: user?.uid,
-            movieId: featuredMovie?.id,
+            authorName: user.email,
+            authorId: user.uid,
+            movieId: featuredMovie.id,
             content: "",
             createdAt: new Date(),
             id: 0,
@@ -182,7 +182,7 @@ const Modal = () => {
         </div>
         {/* Modal Left Side Media Description and Info */}
         <div className="flex space-x-16 rounded-b-md bg-[#181818] px-10 py-8">
-          <div className="space-y-6 text-lg">
+          <div className="w-screen space-y-6 text-lg">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
                 {Math.floor(featuredMovie.vote_average * 10)}% Match
