@@ -11,14 +11,14 @@ import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "../../../atoms/modalAtom";
+import { modalAtomState, movieAtomState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL, BASE_URL } from "../../../constants/media";
 import useAuth from "../../../hooks/useAuth";
 import MovieComments from '../MovieComments/MovieComments';
 
 const Modal = () => {
-  const [showModal, setShowModal] = useRecoilState(modalState);
-  const [featuredMovie, setFeaturedMovie] = useRecoilState(movieState);
+  const [showModal, setShowModal] = useRecoilState(modalAtomState);
+  const [featuredMovie, setFeaturedMovie] = useRecoilState(movieAtomState);
   const [trailer, setTrailer] = useState("");
   const [genres, setGenres] = useState([]);
   const [muted, setMuted] = useState(false);
@@ -76,7 +76,7 @@ const Modal = () => {
         },
         method: "POST",
       }).then(() => {
-        if (data.id) {
+        if (data.id && user && featuredMovie) {
           setComment({
             authorName: user.email,
             authorId: user.uid,
@@ -89,8 +89,8 @@ const Modal = () => {
           fetchComments();
         } else {
           setComment({
-            authorName: user?.email,
-            authorId: user?.uid,
+            authorName: user.email,
+            authorId: user.uid,
             movieId: featuredMovie?.id,
             content: "",
             createdAt: new Date(),

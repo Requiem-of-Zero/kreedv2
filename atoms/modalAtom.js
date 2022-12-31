@@ -1,16 +1,16 @@
 import { atom } from "recoil";
 
-export const modalState = atom({
+export const modalAtomState = atom({
   key: 'modalState',
   default: false,
 })
 
-export const movieState = atom({
+export const movieAtomState = atom({
   key: 'movieState',
   default: null,
 })
 
-export const commentsState = atom({
+export const commentsAtomState = atom({
   key: 'commentsState',
   default: null
 })
