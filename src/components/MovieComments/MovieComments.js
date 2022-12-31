@@ -1,15 +1,17 @@
+import CommentItem from "./CommentItem";
+
 const MovieComments = ({ comments }) => {
   return (
-    <div className="flex flex-col items-center ">
-      <h1>Comments</h1>
+    <div className="flex flex-col mx-auto w-[80%]">
+      <h1 className="text-white/50 py-3 text-center">Comments</h1>
       <ul className="comments-list">
         {comments.length ? (
           comments.map((comment) => {
-            return <li>{comment.content}</li>;
+            return <li><CommentItem {...comment}/></li>;
           })
         ) : (
-          <div>
-            <p>There are no comments...</p>
+          <div className="py-4 text-white/50">
+            <p className='text-center'>There are no comments...</p>
           </div>
         )}
       </ul>

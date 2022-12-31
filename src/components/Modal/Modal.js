@@ -57,8 +57,8 @@ const Modal = () => {
     }
 
     fetchMovie()
+    fetchComments()
     return() => {
-      
     }
   }, [featuredMovie]);
   
@@ -219,7 +219,7 @@ const Modal = () => {
                 <textarea
                   name="content"
                   value={comment.content}
-                  placeholder="Add to the discussion"
+                  placeholder="Add to the discussion..."
                   onChange={(e) => {
                     setComment({ ...comment, content: e.target.value });
                   }}
@@ -230,7 +230,7 @@ const Modal = () => {
                     e.preventDefault();
                     handleSubmit(comment);
                   }}
-                  className="text-sm bg-red-700 rounded-r-md py-2 px-4 transition duration-300 hover:bg-blue-700 hover:text-black"
+                  className="text-sm bg-red-700 rounded-r-md py-2 px-4 transition duration-300 resize-none focus:!outline-none hover:bg-blue-700 hover:text-black"
                 >
                   Comment
                 </button>
