@@ -3,13 +3,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "../../../atoms/modalAtom";
+import { modalAtomState, movieAtomState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL } from "../../../constants/media";
 
 const Banner = ({ netflixOriginals }) => {
   const [featuredMovie, setFeaturedMovie] = useState(null);
-  const [showModal, setShowModal] = useRecoilState(modalState);
-  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
+  const [showModal, setShowModal] = useRecoilState(modalAtomState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieAtomState);
 
   useEffect(() => {
     setFeaturedMovie(

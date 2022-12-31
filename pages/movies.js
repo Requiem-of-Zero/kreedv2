@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { modalState } from "../atoms/modalAtom";
+import { modalAtomState } from "../atoms/modalAtom";
 import useAuth from "../hooks/useAuth";
 import Banner from "../src/components/Banner/Banner";
 import Header from "../src/components/Header/Header";
@@ -54,7 +54,7 @@ const TVShows = ({
   familyMovies,
 }) => {
   const { logout, loading } = useAuth();
-  const [showModal, setShowModal] = useRecoilState(modalState);
+  const [showModal, setShowModal] = useRecoilState(modalAtomState);
 
   if (loading) return null;
 

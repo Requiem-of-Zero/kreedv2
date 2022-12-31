@@ -6,9 +6,7 @@ const CommentItem = ({ content, authorName, createdAt }) => {
 
   const [date, time] = createdAt.split("T");
   const [year, month, day] = date.split("-");
-  console.log(date);
   // const seconds = (currentDate.getTime() - createdAt.getTime())/1000;
-  // console.log(seconds)
   return (
     <div className="flex gap-4 pb-5">
       <Image
