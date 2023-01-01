@@ -23,8 +23,9 @@ import { useRecoilState } from "recoil";
 import { modalAtomState, movieAtomState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL } from "../../../constants/media";
 import useAuth from "../../../hooks/useAuth";
-import { fetchComments } from "../../../utils/comments";
+import { createComment, fetchComments } from "../../../utils/comments";
 import { fetchMovie } from "../../../utils/movies";
+import { refreshData } from "../../../utils/refreshPage";
 import { db } from "../../config/firebase";
 import MovieComments from "../MovieComments/MovieComments";
 import { handleList } from "./Modal.util";
@@ -73,60 +74,27 @@ const Modal = () => {
     return () => {};
   }, [featuredMovie]);
 
-  async function createComment(data) {
-    try {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/createComment`, {
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      }).then(() => {
-        if (data.id && user && featuredMovie) {
-          setComment({
-            authorName: user.email,
-            authorId: user.uid,
-            movieId: featuredMovie.id,
-            content: "",
-            createdAt: new Date(),
-            id: 0,
-          });
-          refreshData();
-          fetchComments(featuredMovie?.id, setComments);
-        } else {
-          setComment({
-            authorName: user.email,
-            authorId: user.uid,
-            movieId: featuredMovie?.id,
-            content: "",
-            createdAt: new Date(),
-            id: 0,
-          });
-          refreshData();
-          fetchComments(featuredMovie?.id, setComments);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const handleSubmit = async (data) => {
     try {
-      createComment(data);
+      createComment(
+        data,
+        user,
+        featuredMovie,
+        setComments,
+        setComment,
+        refreshData,
+        router
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Refreshes the data by using router to push the same path to the client
-  const refreshData = () => {
-    router.replace(router.asPath);
-  };
   // Sets the modal state to false to close the modal
   const handleClose = () => {
     setShowModal(false);
   };
+
   return (
     // Material UI Modal Container
     <MuiModal
