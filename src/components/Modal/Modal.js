@@ -1,4 +1,5 @@
 import {
+  CheckIcon,
   HandThumbUpIcon,
   PlusIcon,
   SpeakerWaveIcon,
@@ -6,15 +7,18 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import MuiModal from "@mui/material/Modal";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy";
 import { useRecoilState } from "recoil";
 import { modalAtomState, movieAtomState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL } from "../../../constants/media";
 import useAuth from "../../../hooks/useAuth";
-import MovieComments from '../MovieComments/MovieComments';
+import { db } from "../../config/firebase";
+import MovieComments from "../MovieComments/MovieComments";
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalAtomState);
@@ -22,14 +26,16 @@ const Modal = () => {
   const [trailer, setTrailer] = useState("");
   const [genres, setGenres] = useState([]);
   const [muted, setMuted] = useState(false);
+  const [addedToList, setAddedToList] = useState(false);
+
   const { user } = useAuth();
-    const [comment, setComment] = useState({
-      id: 0,
-      authorName: user.email,
-      authorId: user.uid,
-      movieId: featuredMovie.id,
-      content: "",
-    });
+  const [comment, setComment] = useState({
+    id: 0,
+    authorName: user.email,
+    authorId: user.uid,
+    movieId: featuredMovie.id,
+    content: "",
+  });
   const [comments, setComments] = useState([]);
   const router = useRouter();
 
@@ -49,22 +55,25 @@ const Modal = () => {
         const vidIdx = data.videos.results.findIndex(
           (element) => element.type === "Trailer"
         );
-        setTrailer(data.videos.results[vidIdx] && data.videos.results[vidIdx].key);
+        setTrailer(
+          data.videos.results[vidIdx] && data.videos.results[vidIdx].key
+        );
       }
       if (data.genres) {
         setGenres(data.genres);
       }
     }
 
-    fetchMovie()
-    fetchComments()
-    return() => {
-    }
+    fetchMovie();
+    fetchComments();
+    return () => {};
   }, [featuredMovie]);
-  
+
   async function fetchComments() {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movie/${featuredMovie.id}`).then((res) => res.json());
-    setComments(data)
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/movie/${featuredMovie.id}`
+    ).then((res) => res.json());
+    setComments(data);
   }
 
   async function createComment(data) {
@@ -105,6 +114,35 @@ const Modal = () => {
     }
   }
 
+  const handleList = async () => {
+    if (addedToList) {
+      await deleteDoc(
+        doc(db, "customers", user.uid, "myList", featuredMovie.id.toString())
+      );
+      toast(
+        `${
+          featuredMovie.title || featuredMovie.original_name
+        } has been removed from my list`,
+        {
+          duration: 3000,
+        }
+      )
+    } else {
+      await setDoc(
+        doc(db, "customers", user.uid, "myList", featuredMovie.id.toString()),
+        { ...featuredMovie }
+      );
+      toast(
+        `${
+          featuredMovie.title || featuredMovie.original_name
+        } has been added to my list`,
+        {
+          duration: 3000,
+        }
+      )
+    }
+  };
+
   const handleSubmit = async (data) => {
     try {
       createComment(data);
@@ -129,6 +167,7 @@ const Modal = () => {
       className="fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide"
     >
       <>
+        <Toaster position="bottom-center" />
         {/* Close Modal Button */}
         <button
           onClick={handleClose}
@@ -164,9 +203,15 @@ const Modal = () => {
                 <FaPlay className="h-7 w-7 text-black" /> Play
               </button>
 
-              <button className="modalBtn">
-                <PlusIcon className="h-7 w-7" />
+              {/* Add to List Button */}
+              <button className="modalBtn" onClick={handleList}>
+                {addedToList ? (
+                  <CheckIcon className="h-7 w-7" />
+                ) : (
+                  <PlusIcon className="h-7 w-7" />
+                )}
               </button>
+
               <button className="modalBtn">
                 <HandThumbUpIcon className="h-7 w-7" />
               </button>
@@ -213,7 +258,7 @@ const Modal = () => {
               </div>
             </div>
             <div className="comments_section">
-              <MovieComments comments={comments}/>
+              <MovieComments comments={comments} />
               {/* Comment Form for Media */}
               <form className="comments_form flex justify-center">
                 <textarea
