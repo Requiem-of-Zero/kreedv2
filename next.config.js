@@ -7,7 +7,10 @@ const nextConfig = {
         source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "https://localhost:3000, https://www.kreedv2.vercel.app",
+          },
           {
             key: "Access-Control-Allow-Methods",
             value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
@@ -34,4 +37,4 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
-module.exports = nextConfig
+module.exports = nextConfig;
