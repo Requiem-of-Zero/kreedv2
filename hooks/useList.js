@@ -2,7 +2,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../src/config/firebase";
 
-const useList = ({ uid }) => {
+const useList = ( uid ) => {
   const [list, setList] = useState([]);
 
   useEffect(() => {

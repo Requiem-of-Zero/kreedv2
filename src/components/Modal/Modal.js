@@ -7,7 +7,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import MuiModal from "@mui/material/Modal";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -27,17 +27,33 @@ const Modal = () => {
   const [genres, setGenres] = useState([]);
   const [muted, setMuted] = useState(false);
   const [addedToList, setAddedToList] = useState(false);
-
+  const [movies, setMovies] = useState([]);
   const { user } = useAuth();
+  
   const [comment, setComment] = useState({
     id: 0,
     authorName: user.email,
     authorId: user.uid,
-    movieId: featuredMovie.id,
+    movieId: featuredMovie?.id,
     content: "",
   });
   const [comments, setComments] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      return onSnapshot(
+        collection(db, "customers", user.uid, "myList"),
+        (snapshot) => setMovies(snapshot.docs)
+      );
+    }
+  }, [db, featuredMovie?.id]);
+
+  useEffect(() => {
+    setAddedToList(
+      movies.findIndex((result) => result.data().id === featuredMovie?.id) !== -1
+    );
+  }, [movies]);
 
   useEffect(() => {
     if (!featuredMovie) return;
@@ -45,7 +61,7 @@ const Modal = () => {
     async function fetchMovie() {
       const data = await fetch(
         `https://api.themoviedb.org/3/${
-          featuredMovie.media_type === "tv" ? "tv" : "movie"
+          featuredMovie?.media_type === "tv" ? "tv" : "movie"
         }/${featuredMovie?.id}?api_key=${
           process.env.NEXT_PUBLIC_API_KEY
         }&language=en-US&append_to_response=videos`
@@ -71,7 +87,7 @@ const Modal = () => {
 
   async function fetchComments() {
     const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/movie/${featuredMovie.id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/movie/${featuredMovie?.id}`
     ).then((res) => res.json());
     setComments(data);
   }
@@ -117,16 +133,16 @@ const Modal = () => {
   const handleList = async () => {
     if (addedToList) {
       await deleteDoc(
-        doc(db, "customers", user.uid, "myList", featuredMovie.id.toString())
+        doc(db, "customers", user.uid, "myList", featuredMovie?.id.toString())
       );
       toast(
         `${
-          featuredMovie.title || featuredMovie.original_name
-        } has been removed from my list`,
+          featuredMovie?.title || featuredMovie?.original_name
+        } has been removed from my list ❌`,
         {
           duration: 3000,
         }
-      )
+      );
     } else {
       await setDoc(
         doc(db, "customers", user.uid, "myList", featuredMovie.id.toString()),
@@ -135,11 +151,11 @@ const Modal = () => {
       toast(
         `${
           featuredMovie.title || featuredMovie.original_name
-        } has been added to my list`,
+        } has been added to my list ✅`,
         {
           duration: 3000,
         }
-      )
+      );
     }
   };
 
@@ -183,7 +199,7 @@ const Modal = () => {
               `https://www.youtube.com/watch?v=p2dKdvLXksQ`
             }
             light={`${IMAGE_BASE_URL}/${
-              featuredMovie.backdrop_path || featuredMovie.poster_path
+              featuredMovie?.backdrop_path || featuredMovie?.poster_path
             }`}
             width="100%"
             height="100%"
@@ -230,10 +246,10 @@ const Modal = () => {
           <div className="w-screen space-y-6 text-lg">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
-                {Math.floor(featuredMovie.vote_average * 10)}% Match
+                {Math.floor(featuredMovie?.vote_average * 10)}% Match
               </p>
               <p className="font-light">
-                {featuredMovie.release_date || featuredMovie.first_air_date}
+                {featuredMovie?.release_date || featuredMovie?.first_air_date}
               </p>
               <div className="flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-xs">
                 HD
@@ -241,7 +257,7 @@ const Modal = () => {
             </div>
             {/* Modal Right Side Media Description and Info */}
             <div className="flex flex-col gap-x-10 gap-y-4 font-light md:flex-row">
-              <p className="w-5/6">{featuredMovie.overview}</p>
+              <p className="w-5/6">{featuredMovie?.overview}</p>
               <div className="flex flex-col space-y-3 text-sm">
                 <div>
                   <span className="text-[gray]">Genres: </span>
@@ -249,11 +265,11 @@ const Modal = () => {
                 </div>
                 <div>
                   <span className="text-[gray]">Original Language: </span>
-                  {featuredMovie.original_language.toUpperCase()}
+                  {featuredMovie?.original_language.toUpperCase()}
                 </div>
                 <div>
                   <span className="text-[gray]">Total votes: </span>
-                  {featuredMovie.vote_count}
+                  {featuredMovie?.vote_count}
                 </div>
               </div>
             </div>

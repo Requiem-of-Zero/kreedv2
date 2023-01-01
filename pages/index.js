@@ -1,7 +1,8 @@
 import Head from "next/head";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { modalAtomState } from "../atoms/modalAtom";
+import { modalAtomState, movieAtomState } from "../atoms/modalAtom";
 import useAuth from "../hooks/useAuth";
+import useList from "../hooks/useList";
 import Banner from "../src/components/Banner/Banner";
 import Header from "../src/components/Header/Header";
 import MediaRows from "../src/components/MediaRow/MediaRows";
@@ -53,11 +54,13 @@ const Home = ({
   romanceMovies,
   documentaries,
 }) => {
-  const { logout, loading } = useAuth();
+  const { loading, user } = useAuth();
   const [showModal, setShowModal] = useRecoilState(modalAtomState);
+  const featuredMovie = useRecoilState(movieAtomState)
+  const list = useList(user.uid);
 
   if (loading) return null;
-
+  console.log(list)
   return (
     <div
       className={`relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[100vh] ${
@@ -76,6 +79,7 @@ const Home = ({
           <MediaRows title="Top Rated" movies={topRated} />
           <MediaRows title="Action Thrillers" movies={actionMovies} />
           {/* My Watchlist Component */}
+          {list.length > 0 && <MediaRows title='My Watchlist' movies={list} />}
           <MediaRows title="Comedies" movies={comedyMovies} />
           <MediaRows title="Horror Movies" movies={horrorMovies} />
           <MediaRows title="Romance Movies" movies={romanceMovies} />
