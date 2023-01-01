@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import { modalAtomState } from "../../atoms/modalAtom";
 import Header from "../../src/components/Header/Header";
 import Modal from "../../src/components/Modal/Modal";
-import { fetchMovie, getMovieSpecificFromTMDB } from "../../utils/movies";
 
 export const getServerSideProps = async (context) => {
   const movieId = context.query.movieId;
