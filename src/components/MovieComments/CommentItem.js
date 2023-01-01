@@ -13,6 +13,7 @@ const CommentItem = ({ content, authorName, createdAt }) => {
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"
         width={40}
         height={30}
+        alt='profile picture'
       />
       <div className="flex flex-col w-[90%]">
         <div className="flex gap-5 justify-between">

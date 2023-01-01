@@ -7,11 +7,15 @@ const MovieComments = ({ comments }) => {
       <ul className="comments-list">
         {comments.length ? (
           comments.map((comment) => {
-            return <li><CommentItem {...comment}/></li>;
+            return (
+              <li key={`comment-${comment.id}`}>
+                <CommentItem {...comment} />
+              </li>
+            );
           })
         ) : (
           <div className="py-4 text-white/50">
-            <p className='text-center'>There are no comments...</p>
+            <p className="text-center">There are no comments...</p>
           </div>
         )}
       </ul>

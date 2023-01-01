@@ -7,18 +7,27 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import MuiModal from "@mui/material/Modal";
-import { collection, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy";
 import { useRecoilState } from "recoil";
 import { modalAtomState, movieAtomState } from "../../../atoms/modalAtom";
 import { IMAGE_BASE_URL } from "../../../constants/media";
 import useAuth from "../../../hooks/useAuth";
+import { fetchComments } from "../../../utils/comments";
+import { fetchMovie } from "../../../utils/movies";
 import { db } from "../../config/firebase";
 import MovieComments from "../MovieComments/MovieComments";
+import { handleList } from "./Modal.util";
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalAtomState);
@@ -29,7 +38,7 @@ const Modal = () => {
   const [addedToList, setAddedToList] = useState(false);
   const [movies, setMovies] = useState([]);
   const { user } = useAuth();
-  
+
   const [comment, setComment] = useState({
     id: 0,
     authorName: user.email,
@@ -51,46 +60,18 @@ const Modal = () => {
 
   useEffect(() => {
     setAddedToList(
-      movies.findIndex((result) => result.data().id === featuredMovie?.id) !== -1
+      movies.findIndex((result) => result.data().id === featuredMovie?.id) !==
+        -1
     );
   }, [movies]);
 
   useEffect(() => {
     if (!featuredMovie) return;
 
-    async function fetchMovie() {
-      const data = await fetch(
-        `https://api.themoviedb.org/3/${
-          featuredMovie?.media_type === "tv" ? "tv" : "movie"
-        }/${featuredMovie?.id}?api_key=${
-          process.env.NEXT_PUBLIC_API_KEY
-        }&language=en-US&append_to_response=videos`
-      ).then((res) => res.json());
-
-      if (data.videos) {
-        const vidIdx = data.videos.results.findIndex(
-          (element) => element.type === "Trailer"
-        );
-        setTrailer(
-          data.videos.results[vidIdx] && data.videos.results[vidIdx].key
-        );
-      }
-      if (data.genres) {
-        setGenres(data.genres);
-      }
-    }
-
-    fetchMovie();
-    fetchComments();
+    fetchMovie(featuredMovie, setTrailer, setGenres);
+    fetchComments(featuredMovie?.id, setComments);
     return () => {};
   }, [featuredMovie]);
-
-  async function fetchComments() {
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/movie/${featuredMovie?.id}`
-    ).then((res) => res.json());
-    setComments(data);
-  }
 
   async function createComment(data) {
     try {
@@ -111,7 +92,7 @@ const Modal = () => {
             id: 0,
           });
           refreshData();
-          fetchComments();
+          fetchComments(featuredMovie?.id, setComments);
         } else {
           setComment({
             authorName: user.email,
@@ -122,42 +103,13 @@ const Modal = () => {
             id: 0,
           });
           refreshData();
-          fetchComments();
+          fetchComments(featuredMovie?.id, setComments);
         }
       });
     } catch (error) {
       console.log(error);
     }
   }
-
-  const handleList = async () => {
-    if (addedToList) {
-      await deleteDoc(
-        doc(db, "customers", user.uid, "myList", featuredMovie?.id.toString())
-      );
-      toast(
-        `${
-          featuredMovie?.title || featuredMovie?.original_name
-        } has been removed from my list ❌`,
-        {
-          duration: 3000,
-        }
-      );
-    } else {
-      await setDoc(
-        doc(db, "customers", user.uid, "myList", featuredMovie.id.toString()),
-        { ...featuredMovie }
-      );
-      toast(
-        `${
-          featuredMovie.title || featuredMovie.original_name
-        } has been added to my list ✅`,
-        {
-          duration: 3000,
-        }
-      );
-    }
-  };
 
   const handleSubmit = async (data) => {
     try {
@@ -220,7 +172,10 @@ const Modal = () => {
               </button>
 
               {/* Add to List Button */}
-              <button className="modalBtn" onClick={handleList}>
+              <button
+                className="modalBtn"
+                onClick={() => handleList(user.uid, featuredMovie, addedToList)}
+              >
                 {addedToList ? (
                   <CheckIcon className="h-7 w-7" />
                 ) : (
