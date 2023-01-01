@@ -60,7 +60,6 @@ const Home = ({
   const list = useList(user.uid);
 
   if (loading) return null;
-  console.log(list)
   return (
     <div
       className={`relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[100vh] ${
