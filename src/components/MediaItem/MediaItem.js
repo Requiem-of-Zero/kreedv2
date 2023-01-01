@@ -19,12 +19,16 @@ const MediaItem = ({ movie }) => {
           movie.backdrop_path || movie.poster_path
         }`}
         alt="movie thumbnail"
-        height={400}
-        width={600}
         className="rounded-sm object-cover md:rounded"
+        placeholder="blur"
+        fill
+        object-fit='cover'
         sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
+        blurDataURL={`https://image.tmdb.org/t/p/w500${
+          movie.backdrop_path || movie.poster_path
+        }`}
       />
     </div>
   );
