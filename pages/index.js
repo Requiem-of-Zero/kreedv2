@@ -57,7 +57,7 @@ const Home = ({
   const { loading, user } = useAuth();
   const [showModal, setShowModal] = useRecoilState(modalAtomState);
   const featuredMovie = useRecoilState(movieAtomState)
-  const list = useList(user.uid);
+  const list = user && useList(user.uid);
 
   if (loading) return null;
   return (
@@ -78,7 +78,7 @@ const Home = ({
           <MediaRows title="Top Rated" movies={topRated} />
           <MediaRows title="Action Thrillers" movies={actionMovies} />
           {/* My Watchlist Component */}
-          {list.length > 0 && <MediaRows title='My Watchlist' movies={list} />}
+          {list && list.length > 0 && <MediaRows title='My Watchlist' movies={list} />}
           <MediaRows title="Comedies" movies={comedyMovies} />
           <MediaRows title="Horror Movies" movies={horrorMovies} />
           <MediaRows title="Romance Movies" movies={romanceMovies} />

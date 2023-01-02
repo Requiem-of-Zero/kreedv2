@@ -81,7 +81,7 @@ const Login = () => {
           type="submit"
           className="w-full rounded bg-[#e50914] py-3 font-semibold transition duration-300 hover:bg-blue-700 hover:text-black"
           onClick={() => {
-            setLogin(true);
+            setLogin(true)
           }}
         >
           Sign In

@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import logo from "../../../public/static/images/kreed_logo.png";
 import BasicMenu from "../BasicMenu/BasicMenu";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { logout } = useAuth();
+  const router = useRouter();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -67,16 +69,21 @@ const Header = () => {
         <MagnifyingGlassIcon className="hidden h-6 w-6 sm:inline cursor-pointer" />
         <p className="hidden lg:inline cursor-pointer">Kids</p>
         <BellIcon className="h-6 w-6 sm:inline" />
-        {/* <Link href="/account"> */}
-        <Image
-          src="https://i.pinimg.com/474x/9e/0f/10/9e0f1095b31b781b3a3c5f87461724bd.jpg"
-          width={30}
-          height={30}
-          className="cursor-pointer rounded"
-          alt="demo profile image"
-          onClick={() => logout()}
-        />
-        {/* </Link> */}
+        <Link
+          href="/login"
+          onClick={() => {
+            router.push('/login')
+            logout();
+          }}
+        >
+          <Image
+            src="https://i.pinimg.com/474x/9e/0f/10/9e0f1095b31b781b3a3c5f87461724bd.jpg"
+            width={30}
+            height={30}
+            className="cursor-pointer rounded"
+            alt="demo profile image"
+          />
+        </Link>
       </div>
     </header>
   );
