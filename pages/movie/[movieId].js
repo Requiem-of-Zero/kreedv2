@@ -60,9 +60,11 @@ const MovieShow = ({ movie }) => {
         </div>
         <div className="right flex flex-col gap-20">
           <div className="top">
-            <div className="movie-info w-[50%] space-y-4">
-              <h1>{title || original_title}</h1>
-              {tagline && <h2>{tagline}</h2>}
+            <div className="movie-info space-y-4 lg:w-[70%]">
+              <h1 className="text-xl font-extrabold text-red-700 lg:tracking-wider lg:text-2xl">
+                {title || original_title}
+              </h1>
+              {tagline && <h2 className="text-l italic">{tagline}</h2>}
               <p>{overview}</p>
             </div>
           </div>
@@ -97,7 +99,7 @@ const MovieShow = ({ movie }) => {
                 <span>Premiered: </span>
                 {`${season} ${year}`}
               </p>
-              <p>
+              <p className="text-blue-700">
                 <span>Duration: </span>
                 {`${runtime} min`}
               </p>
