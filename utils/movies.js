@@ -17,3 +17,13 @@ export async function fetchMovie(currentMovie, setTrailer, setGenres) {
     setGenres(data.genres);
   }
 }
+
+export const getAllGenres = (genres) => {
+  const res = [];
+
+  for(const genre of genres){
+    res.push(genre.name)
+  }
+
+  return res.join(', ')
+}
