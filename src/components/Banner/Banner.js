@@ -23,7 +23,7 @@ const Banner = ({ netflixOriginals }) => {
       <div className="z-0 absolute top-0 left-0 h-[70vh] lg:h-[95vh] w-screen select-none">
         <Image
           src={`${IMAGE_BASE_URL}/${
-            (featuredMovie && featuredMovie.backdrop_path) ||
+            featuredMovie && featuredMovie.backdrop_path ||
             featuredMovie?.poster_path
           }`}
           object-fit="contain"

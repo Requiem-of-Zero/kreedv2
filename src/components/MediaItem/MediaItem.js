@@ -16,7 +16,7 @@ const MediaItem = ({ movie }) => {
     >
       <Image
         src={`https://image.tmdb.org/t/p/w500${
-          movie.backdrop_path || movie.poster_path
+          movie && movie.backdrop_path || movie.poster_path
         }`}
         alt="movie thumbnail"
         className="rounded-sm object-cover md:rounded"
@@ -27,7 +27,7 @@ const MediaItem = ({ movie }) => {
               (max-width: 1200px) 50vw,
               33vw"
         blurDataURL={`https://image.tmdb.org/t/p/w500${
-          movie.backdrop_path || movie.poster_path
+          movie && movie.backdrop_path || movie.poster_path
         }`}
       />
     </div>
