@@ -21,7 +21,7 @@ const MediaItem = ({ movie }) => {
         alt="movie thumbnail"
         className="rounded-sm object-cover md:rounded"
         placeholder="blur"
-        fill
+        fill={true}
         loading='lazy'
         object-fit='cover'
         sizes="(max-width: 768px) 100vw,

@@ -27,9 +27,8 @@ const Banner = ({ netflixOriginals }) => {
             featuredMovie?.poster_path
           }`}
           object-fit="contain"
-          fill
-          loading='lazy'
-          priority
+          fill={true}
+          priority={true}
           sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
