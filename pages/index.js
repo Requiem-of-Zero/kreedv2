@@ -11,6 +11,26 @@ import requests from "../utils/requests";
 
 export const getServerSideProps = async () => {
   const [
+    netflixOriginalsPromise,
+    trendingNowPromise,
+    topRatedPromise,
+    actionMoviesPromise,
+    comedyMoviesPromise,
+    horrorMoviesPromise,
+    romanceMoviesPromise,
+    documentariesPromise,
+  ] = [
+    fetch(requests.fetchNetflixOriginals.url),
+    fetch(requests.fetchTrending.url),
+    fetch(requests.fetchTopRated.url),
+    fetch(requests.fetchActionMovies.url),
+    fetch(requests.fetchComedyMovies.url),
+    fetch(requests.fetchHorrorMovies.url),
+    fetch(requests.fetchRomanceMovies.url),
+    fetch(requests.fetchDocumentaries.url),
+  ];
+  
+  const [
     netflixOriginals,
     trendingNow,
     topRated,
@@ -20,14 +40,14 @@ export const getServerSideProps = async () => {
     romanceMovies,
     documentaries,
   ] = await Promise.all([
-    fetch(requests.fetchNetflixOriginals.url).then((res) => res.json()),
-    fetch(requests.fetchTrending.url).then((res) => res.json()),
-    fetch(requests.fetchTopRated.url).then((res) => res.json()),
-    fetch(requests.fetchActionMovies.url).then((res) => res.json()),
-    fetch(requests.fetchComedyMovies.url).then((res) => res.json()),
-    fetch(requests.fetchHorrorMovies.url).then((res) => res.json()),
-    fetch(requests.fetchRomanceMovies.url).then((res) => res.json()),
-    fetch(requests.fetchDocumentaries.url).then((res) => res.json()),
+    netflixOriginalsPromise.then((res) => res.json()),
+    trendingNowPromise.then((res) => res.json()),
+    topRatedPromise.then((res) => res.json()),
+    actionMoviesPromise.then((res) => res.json()),
+    comedyMoviesPromise.then((res) => res.json()),
+    horrorMoviesPromise.then((res) => res.json()),
+    romanceMoviesPromise.then((res) => res.json()),
+    documentariesPromise.then((res) => res.json()),
   ]);
 
   return {
@@ -56,7 +76,7 @@ const Home = ({
 }) => {
   const { loading, user } = useAuth();
   const [showModal, setShowModal] = useRecoilState(modalAtomState);
-  const featuredMovie = useRecoilState(movieAtomState)
+  const featuredMovie = useRecoilState(movieAtomState);
   const list = user && useList(user.uid);
 
   if (loading) return null;
@@ -78,7 +98,9 @@ const Home = ({
           <MediaRows title="Top Rated" movies={topRated} />
           <MediaRows title="Action Thrillers" movies={actionMovies} />
           {/* My Watchlist Component */}
-          {list && list.length > 0 && <MediaRows title='My Watchlist' movies={list} />}
+          {list && list.length > 0 && (
+            <MediaRows title="My Watchlist" movies={list} />
+          )}
           <MediaRows title="Comedies" movies={comedyMovies} />
           <MediaRows title="Horror Movies" movies={horrorMovies} />
           <MediaRows title="Romance Movies" movies={romanceMovies} />

@@ -10,6 +10,26 @@ import requests from "../utils/requests";
 
 export const getServerSideProps = async () => {
   const [
+    actionShowsPromise,
+    animationShowsPromise,
+    comedyShowsPromise,
+    realityShowsPromise,
+    dramaShowsPromise,
+    documentaryShowsPromise,
+    kidsShowsPromise,
+    fantansyShowsPromise,
+  ] = [
+    fetch(requests.fetchActionTVShows.url),
+    fetch(requests.fetchAnimationTVShows.url),
+    fetch(requests.fetchComedyTVShows.url),
+    fetch(requests.fetchRealityTVShows.url),
+    fetch(requests.fetchDramaTVShows.url),
+    fetch(requests.fetchDocuSeries.url),
+    fetch(requests.fetchKidsShows.url),
+    fetch(requests.fetchFantasyShows.url),
+  ];
+  
+  const [
     actionShows,
     animationShows,
     comedyShows,
@@ -19,14 +39,14 @@ export const getServerSideProps = async () => {
     kidsShows,
     fantansyShows,
   ] = await Promise.all([
-    fetch(requests.fetchActionTVShows.url).then((res) => res.json()),
-    fetch(requests.fetchAnimationTVShows.url).then((res) => res.json()),
-    fetch(requests.fetchComedyTVShows.url).then((res) => res.json()),
-    fetch(requests.fetchRealityTVShows.url).then((res) => res.json()),
-    fetch(requests.fetchDramaTVShows.url).then((res) => res.json()),
-    fetch(requests.fetchDocuSeries.url).then((res) => res.json()),
-    fetch(requests.fetchKidsShows.url).then((res) => res.json()),
-    fetch(requests.fetchFantasyShows.url).then((res) => res.json()),
+    actionShowsPromise.then((res) => res.json()),
+    animationShowsPromise.then((res) => res.json()),
+    comedyShowsPromise.then((res) => res.json()),
+    realityShowsPromise.then((res) => res.json()),
+    dramaShowsPromise.then((res) => res.json()),
+    documentaryShowsPromise.then((res) => res.json()),
+    kidsShowsPromise.then((res) => res.json()),
+    fantansyShowsPromise.then((res) => res.json()),
   ]);
 
   return {

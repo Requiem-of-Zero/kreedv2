@@ -10,6 +10,26 @@ import requests from "../utils/requests";
 
 export const getServerSideProps = async () => {
   const [
+    historyMoviesPromise,
+    musicalMoviesPromise,
+    fantasyMoviesPromise,
+    mysteryMoviesPromise,
+    warMoviesPromise,
+    televisionMoviesPromise,
+    westernMoviesPromise,
+    familyMoviesPromise,
+  ] = [
+    fetch(requests.fetchHistoryMovies.url),
+    fetch(requests.fetchMusicMovies.url),
+    fetch(requests.fetchFantasyMovies.url),
+    fetch(requests.fetchMysteryMovies.url),
+    fetch(requests.fetchWarMovies.url),
+    fetch(requests.fetchTVMovies.url),
+    fetch(requests.fetchWesternMovies.url),
+    fetch(requests.fetchFamilyMovies.url),
+  ];
+
+  const [
     historyMovies,
     musicalMovies,
     fantasyMovies,
@@ -19,14 +39,14 @@ export const getServerSideProps = async () => {
     westernMovies,
     familyMovies,
   ] = await Promise.all([
-    fetch(requests.fetchHistoryMovies.url).then((res) => res.json()),
-    fetch(requests.fetchMusicMovies.url).then((res) => res.json()),
-    fetch(requests.fetchFantasyMovies.url).then((res) => res.json()),
-    fetch(requests.fetchMysteryMovies.url).then((res) => res.json()),
-    fetch(requests.fetchWarMovies.url).then((res) => res.json()),
-    fetch(requests.fetchTVMovies.url).then((res) => res.json()),
-    fetch(requests.fetchWesternMovies.url).then((res) => res.json()),
-    fetch(requests.fetchFamilyMovies.url).then((res) => res.json()),
+    historyMoviesPromise.then((res) => res.json()),
+    musicalMoviesPromise.then((res) => res.json()),
+    fantasyMoviesPromise.then((res) => res.json()),
+    mysteryMoviesPromise.then((res) => res.json()),
+    warMoviesPromise.then((res) => res.json()),
+    televisionMoviesPromise.then((res) => res.json()),
+    westernMoviesPromise.then((res) => res.json()),
+    familyMoviesPromise.then((res) => res.json()),
   ]);
 
   return {
