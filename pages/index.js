@@ -89,6 +89,8 @@ const Home = ({
       <Head>
         <title>Kreed</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="keywords" content="Home page, Netflix Originals" />
+        <meta name="description" content="Home page of Kreed" />
       </Head>
       <Header />
       <main className="pb-2">
