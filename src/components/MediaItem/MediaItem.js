@@ -7,7 +7,7 @@ const MediaItem = ({ movie }) => {
   const [currentMovie, setCurrentMovie] = useRecoilState(movieAtomState);
 
   return (
-    <div
+    <li
       onClick={() => {
         setCurrentMovie(movie);
         setShowModal(true);
@@ -16,22 +16,23 @@ const MediaItem = ({ movie }) => {
     >
       <Image
         src={`https://image.tmdb.org/t/p/w500${
-          movie && movie.backdrop_path || movie.poster_path
+          (movie && movie.backdrop_path) || movie.poster_path
         }`}
         alt="movie thumbnail"
-        className="rounded-sm object-cover md:rounded"
+        className="rounded-sm object-cover no-drag md:rounded"
         placeholder="blur"
         fill={true}
-        loading='lazy'
-        object-fit='cover'
+        loading="lazy"
+        object-fit="cover"
+        draggable='false'
         sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
         blurDataURL={`https://image.tmdb.org/t/p/w500${
-          movie && movie.backdrop_path || movie.poster_path
+          (movie && movie.backdrop_path) || movie.poster_path
         }`}
       />
-    </div>
+    </li>
   );
 };
 
